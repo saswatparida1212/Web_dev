@@ -34,8 +34,15 @@ router.post("/",isLoggedIn,function(req, res){
                console.log("the username will be: "+ req.user.username)
                //save comment
                comment.save();
-               campground.comments.push(comment._id);
-               campground.save();
+               campground.comments.push(comment);//wait
+
+                Campground.update({_id: campground},{$push: {comments: comment}},function(err,UpdatedCampground){
+                if (err){
+                  console.log(err)
+                }else{
+                  console.log("campground saved")
+                }
+               });
                console.log("----->")
                console.log(comment);
                console.log(campground);
